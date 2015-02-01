@@ -67,7 +67,7 @@ blades = math.floor(steam / 25)
 lift_torque = blades * 25 * 10
 induction_torque = target_rpm * (.1 * data[material][2])
 blade_drag = .00025 * blades * 1
-frictional_drag = (blades * 10) * .01 * 1
+frictional_drag = ((blades * 10) + math.ceil(blades / 4)) * .01 * 1
 
 aerodynamic_drag_torque = target_rpm * blade_drag
 
