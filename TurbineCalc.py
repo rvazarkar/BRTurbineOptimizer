@@ -5,6 +5,8 @@
 import math
 import sys
 
+debug = False
+
 # These are the values assigned to different blocks in the coil. Higher
 # numbers are always better (iron is awful)
 data = {
@@ -75,12 +77,14 @@ num = 1
 # We want the RPMFormula to yield a number as close to 0 as possible,
 # which indicates that the negative factors are almost balanced with the
 # positive ones
-for i in range(1, 1000):
+for i in xrange(1, 1000):
     rotor_energy = lift_torque + \
         (-1 * (induction_torque * i)) + \
         (-1 * aerodynamic_drag_torque) + (-1 * frictional_drag)
     rpmformula = rotor_energy / (blades * 10)
-    if rpmformula < best and rpmformula > 0:
+    if abs(rpmformula) < best:
+        if debug:
+            print "Found new best coil at i = {0} with coefficient of {1}".format(str(i), str(rpmformula))
         best = rpmformula
         num = i
 
@@ -106,7 +110,7 @@ blength = 100000
 
 # Calculate the lowest surface area using different combinations of rotor
 # blade lengths
-for i in range(1, 11):
+for i in xrange(1, 11):
     tlength = blades / (i * 4)
     if blades % (i * 4) > 0:
         tlength += 1
